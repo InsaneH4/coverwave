@@ -1,6 +1,34 @@
-const SpotifyWebApi = require('spotify-web-api-node');
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+//const SpotifyWebApi = require('spotify-web-api-node');
+import SpotifyWebApi from 'spotify-web-api-node';
 const express = require('express');
-const ls = require('local-storage');
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set } from "firebase/database";
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyAXCOlpGlTlJh8gA-TSXMwPLnVH97XmMXY",
+
+    authDomain: "coverwave-c6eef.firebaseapp.com",
+
+    projectId: "coverwave-c6eef",
+
+    storageBucket: "coverwave-c6eef.appspot.com",
+
+    messagingSenderId: "771616364404",
+
+    appId: "1:771616364404:web:755dc8ab06e20df7b23e21",
+
+    measurementId: "G-23SVN8B5GL",
+
+    databaseUrl: "https://coverwave-c6eef-default-rtdb.firebaseio.com/"
+
+};
+
+const fbApp = initializeApp(firebaseConfig);
+
+const database = getDatabase(fbApp);
 
 const scopes = [
     'ugc-image-upload',
@@ -16,13 +44,22 @@ var spotifyApi = new SpotifyWebApi({
     redirectUri: 'http://localhost:8888/callback',
 })
 
-const app = express();
+const expApp = express();
 
-app.get('/login', (req, res) => {
+expApp.get('/login', (req, res) => {
     res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 
-app.get('/callback', (req, res) => {
+async function writeAccessToken(token) {
+    const db = getDatabase();
+    //const username = await spotifyApi.getMe().then(data => data.body.id);
+    const username = "test";
+    set(ref(db, 'users/' + username), {
+        access_token: token
+    });
+}
+
+expApp.get('/callback', (req, res) => {
     const error = req.query.error;
     const code = req.query.code;
     const state = req.query.state;
@@ -38,9 +75,7 @@ app.get('/callback', (req, res) => {
             const access_token = data.body['access_token'];
             const refresh_token = data.body['refresh_token'];
             const expires_in = data.body['expires_in'];
-            //key: access_token, value: access_token variable
-            ls.set("access_token", access_token);
-            console.log("\n" + ls.get("access_token") + "\n");
+            writeAccessToken(access_token);
             spotifyApi.setAccessToken(access_token);
             spotifyApi.setRefreshToken(refresh_token);
 
@@ -67,6 +102,6 @@ app.get('/callback', (req, res) => {
         });
 });
 
-app.listen(8888, () =>
+expApp.listen(8888, () =>
     console.log('HTTP Server up. [http://localhost:8888/login]')
 );

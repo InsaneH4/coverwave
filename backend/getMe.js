@@ -1,15 +1,11 @@
-const fs = require('fs');
-const SpotifyWebApi = require('spotify-web-api-node');
-const ls = require('local-storage');
-const token = ls.get("access_token");
-
-console.log(token);
+import { writeFileSync } from 'fs';
+import SpotifyWebApi from 'spotify-web-api-node';
+const token = 'BQBuifiyQvw80wCw8wJwfqf9WB1CEvzS3r0APw1GQYh1h0H4aexuW1ErjyE0X8_hvvvdr8p0xSxQ5q1AVCmrHbUwJQMDtBAxZOlktzORUzQETe8srJoaozkK-TYOsne8CxP1YxuGv_50Zm6BqQtmJuhpxSCJhUtykwXunHBlFd6ajWDAOvfKEqv3VMiBIredaA3OgMyROMmvTz5bVqmTWnN50wg2YxY_st7GrL3IkpPGQvdbsZu6UUO8y3j2OIFu1AN7IZoC_ZXN9OE7jVUt';
 
 const spotifyApi = new SpotifyWebApi();
 spotifyApi.setAccessToken(token);
 
 function getMyData() {
-
     (async () => {
         const me = await spotifyApi.getMe();
         getUserPlaylists(me.body.id);
@@ -33,7 +29,7 @@ async function getUserPlaylists(userName) {
 
         const tracksJSON = { tracks };
         let data = JSON.stringify(tracksJSON);
-        fs.writeFileSync(playlist.name + '.json', data); // creates new file
+        writeFileSync(playlist.name + '.json', data); // creates new file
     }
 }
 
@@ -50,15 +46,29 @@ async function getPlaylistTracks(playlistId, playlistName) {
     // console.log('The playlist contains these tracks: ', data.body.items[0].track);
     // console.log("'" + playlistName + "'" + ' contains these tracks:');
     let tracks = [];
+    let analysis = [];
 
     for (let track_obj of data.body.items) {
         const track = track_obj.track
         tracks.push(track);
         console.log(track.name + " : " + track.artists[0].name);
+        analysis = getTrackFeatures(track.id);
     }
 
     console.log("---------------+++++++++++++++++++++++++")
     return tracks;
+}
+
+async function getTrackFeatures(track_id) {
+    const response = await fetch(`https://api.spotify.com/v1/audio-features/${track_id}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}`} // CHANGE THIS WHEN TOKEN CAN GET ACCESSED
+    })
+    var res = JSON.parse(await response.text());
+    if (!res.error) {
+        // get audio features (complex)
+        
+    }
 }
 
 getMyData();
