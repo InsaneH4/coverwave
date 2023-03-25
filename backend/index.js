@@ -17,12 +17,12 @@ const scopes = [
 var spotifyApi = new SpotifyWebApi({
     clientId: 'ee221dffbe9c403e94f8fac15b651f41',
     clientSecret: 'ace4279e5ad84eee95127a39b7b7c8d5',
-    redirectUri: 'http://localhost:8888/callback',
+    redirectUri: 'http://localhost:8000/callback',
 })
 
-const expApp = express();
+const app = express();
 
-expApp.get('/login', (req, res) => {
+app.get('/login', (req, res) => {
     res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 
@@ -40,19 +40,20 @@ async function getMe() {
 }
 
 //GET MY PLAYLISTS
-async function getMyPlaylists(userName) {    
+async function getMyPlaylists() {
+    let userName = await getMe();
     const data = await spotifyApi.getUserPlaylists(userName);
 
     console.log("---------------+++++++++++++++++++++++++")
     let playlists = [];
-
-    for (let playlist of data.body.items) {
-        console.log("Name: " + playlist.name + ", ID: " + playlist.id);
+    for (let p of data.body.items) {
+        console.log("Name: " + p.name + ", ID: " + p.id);
 
         //let tracks = await getPlaylistTracks(playlist.id, playlist.name);
-        // console.log(tracks);
-        playlists.push(playlist);
+        // console.log(tracks);    
+        playlists.push(p);
     }
+    //console.log("PLAYLISTStypeof playlists");
     return playlists;
 }
 
@@ -79,8 +80,7 @@ async function getPlaylistTracks(playlistId) {
     return tracks;
 }
 
-async function analyzePlaylist(playlistId) {
-    let playlist = getPlaylistTracks(playlistId);
+async function analyzePlaylist(playlist) {
     let analysis = [];
     const features = {
         acousticness: 0,
@@ -124,11 +124,10 @@ async function analyzePlaylist(playlistId) {
     return analysis;
 }
 
-expApp.get('/callback', (req, res) => {
+app.get('/callback', (req, res) => {
     const error = req.query.error;
     const code = req.query.code;
     const state = req.query.state;
-    const me = getMe();
 
     if (error) {
         console.error('Callback Error:', error);
@@ -162,10 +161,11 @@ expApp.get('/callback', (req, res) => {
                 console.log('access_token:', access_token);
                 spotifyApi.setAccessToken(access_token);
             }, expires_in / 2 * 1000);
-
-            let myPlaylists = getMyPlaylists(me);
+            let myPlaylists = getMyPlaylists();
+            console.log(JSON.stringify(myPlaylists));
+            let currPlaylist = getPlaylistTracks(myPlaylists[0].id);
             //[0] is temp            
-            analyzePlaylist(myPlaylists[0].id);
+            analyzePlaylist(currPlaylist);
         })
         .catch(error => {
             console.error('Error getting Tokens:', error);
@@ -173,6 +173,6 @@ expApp.get('/callback', (req, res) => {
         });
 });
 
-expApp.listen(8888, () =>
-    console.log('HTTP Server up. [http://localhost:8888/login]')
+app.listen(8000, () =>
+    console.log('HTTP Server up. [http://localhost:8000/login]')
 );
