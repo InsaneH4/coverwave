@@ -1,5 +1,6 @@
-var SpotifyWebApi = require('spotify-web-api-node');
+const SpotifyWebApi = require('spotify-web-api-node');
 const express = require('express');
+const ls = require('local-storage');
 
 const scopes = [
     'ugc-image-upload',
@@ -37,7 +38,9 @@ app.get('/callback', (req, res) => {
             const access_token = data.body['access_token'];
             const refresh_token = data.body['refresh_token'];
             const expires_in = data.body['expires_in'];
-
+            //key: access_token, value: access_token variable
+            ls.set("access_token", access_token);
+            console.log("\n" + ls.get("access_token") + "\n");
             spotifyApi.setAccessToken(access_token);
             spotifyApi.setRefreshToken(refresh_token);
 
