@@ -185,12 +185,20 @@ async function generateCover(myPrompt) {
   return prediction.output;
 }
 
-function writeCover(cover) {
+function writeCover(myCover) {
   const db = getDatabase();
-  set(ref(db), {
-    covers: cover,
+  set(ref(db), "playlist", {
+    cover: myCover,
   });
   console.log("wrote cover to database");
+}
+
+function writeTitle(playlist) {
+  const db = getDatabase();
+  set(ref(db), "playlist", {
+    title: playlist.name,
+  });
+  console.log("wrote title to database");
 }
 
 app.get("/callback", (req, res) => {
@@ -239,6 +247,7 @@ app.get("/callback", (req, res) => {
       });
       //selectedPlist.then(console.log);
       let prompt = selectedPlist.then(analyzePlaylist);
+      selectedPlist.then(writeTitle);
       //prompt.then(console.log);
       let image = prompt.then(generateCover);
       image.then(writeCover);
@@ -248,21 +257,6 @@ app.get("/callback", (req, res) => {
       console.error("Error getting Tokens:", error);
       res.send(`Error getting Tokens: ${error}`);
     });
-});
-
-app.get("/playlists", (req, res) => {
-  return getMyPlaylists();
-});
-
-app.get("/prompt", (req, res) => {
-  prompt.then((prompt) => {
-    res.send(prompt);
-  });
-  return res;
-});
-
-app.get("/test", (req, res) => {
-  res.send("test");
 });
 
 app.listen(8000, () =>
