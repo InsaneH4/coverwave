@@ -7,15 +7,6 @@ import express from "express";
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set } from "firebase/database";
-
-// TODO: Add SDKs for Firebase products that you want to use
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
 const firebaseConfig = {
   apiKey: "AIzaSyAnpMfGMByUyomWdtFPhKxfvw3imHe5bGo",
 
@@ -199,6 +190,7 @@ function writeCover(cover) {
   set(ref(db), {
     covers: cover,
   });
+  console.log("wrote cover to database");
 }
 
 app.get("/callback", (req, res) => {
@@ -249,7 +241,7 @@ app.get("/callback", (req, res) => {
       let prompt = selectedPlist.then(analyzePlaylist);
       //prompt.then(console.log);
       let image = prompt.then(generateCover);
-      // image.then(storeCover);
+      image.then(writeCover);
       image.then(console.log);
     })
     .catch((error) => {
