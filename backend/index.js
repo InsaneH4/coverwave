@@ -84,6 +84,15 @@ async function getPlaylistTracks(playlistId) {
   return tracks;
 }
 
+function getPlaylistName(playlistId) {
+  spotifyApi.getPlaylist(playlistId)
+  .then(function(data) {
+    console.log('Some information about this playlist', data.body);
+  }, function(err) {
+    console.log('Something went wrong!', err);
+  });
+}
+
 function analyzePlaylist(playlist) {
   let analysis = [0, 0, 0, 0, 0, 0];
   for (let track of playlist) {
@@ -245,9 +254,11 @@ app.get("/callback", (req, res) => {
       //myPlaylists.then(console.log);
       let selectedPlist = myPlaylists.then((playlists) => {
         // console.log(playlists);
+        getPlaylistName(playlists[0].id);
         return getPlaylistTracks(playlists[0].id);
       });
-      //selectedPlist.then(console.log);
+      // let bott = getPlaylistName()
+      selectedPlist.then(console.log);
       let prompt = selectedPlist.then(analyzePlaylist);
       //selectedPlist.then(writeTitle);
       //prompt.then(console.log);
