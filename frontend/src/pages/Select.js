@@ -23,24 +23,14 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 const db = getDatabase();
-const coversRef = ref(db, "covers/");
-const titlesRef = ref(db, "playlists/");
+const coverRef = ref(db, "cover/");
+const playlistRef = ref(db, "playlist/");
 let imageUrl = "";
 let pName = "title not found";
-get(child(coversRef)).then((snapshot) => {
-  if (snapshot.exists()) {
-    imageUrl = snapshot.val();
-  }
-});
-get(child(titlesRef)).then((snapshot) => {
-  if (snapshot.exists()) {
-    pName = snapshot.val();
-  }
-});
-onValue(coversRef, (snapshot) => {
+onValue(coverRef, (snapshot) => {
   imageUrl = snapshot.val();
 });
-onValue(titlesRef, (snapshot) => {
+onValue(playlistRef, (snapshot) => {
   pName = snapshot.val();
 });
 
