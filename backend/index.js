@@ -16,7 +16,7 @@ const scopes = [
 let spotifyApi = new SpotifyWebApi({
     clientId: 'ee221dffbe9c403e94f8fac15b651f41',
     clientSecret: 'ace4279e5ad84eee95127a39b7b7c8d5',
-    redirectUri: 'https://coverwave.herokuapp.com/callback',
+    redirectUri: 'http://localhost:3000/select',
 });
 
 const app = express();
@@ -213,6 +213,10 @@ app.get('/callback', (req, res) => {
             res.send(`Error getting Tokens: ${error}`);
         });
 });
+
+app.get('/playlists', (req, res) => {
+    return getMyPlaylists();
+})
 
 app.listen(8000, () =>
     console.log('HTTP Server up. [https://coverwave.herokuapp.com/login]')

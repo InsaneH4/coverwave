@@ -171,7 +171,7 @@ body {
   transform: translate(-50%, -50%); */
 }
 
-.search-form input[type="text"]{
+.search-form .dropdownBar{
   margin: auto;
   background-color: var(--main-bg-color);
   display: flex;
@@ -186,6 +186,10 @@ body {
   padding: 0.5rem; 
   border-color: #ccc;
   color: black;
+}
+
+.search-form .dropdownContent {
+  position: absolute;
 }
 
 .search-form input[type="button"] {
