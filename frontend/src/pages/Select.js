@@ -23,26 +23,20 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 const db = getDatabase();
-const coverRef = ref(db, "cover/");
-const playlistRef = ref(db, "playlist/");
-let imageUrl = "";
+const coverRef = ref(db, "playlistCovers");
+const playlistRef = ref(db, "playlists");
+let imageUrl = "error";
 let pName = "title not found";
-get(child(coverRef)).then((snapshot) => {
-  if (snapshot.exists()) {
-    imageUrl = snapshot.val();
-  }
-});
-get(child(playlistRef)).then((snapshot) => {
-  if (snapshot.exists()) {
-    pName = snapshot.val();
-  }
-});
+
 onValue(coverRef, (snapshot) => {
   imageUrl = snapshot.val();
 });
 onValue(playlistRef, (snapshot) => {
   pName = snapshot.val();
 });
+
+console.log(imageUrl);
+console.log(pName);
 
 export default function Select() {
   // const [list ,setList] = useState([]);

@@ -209,7 +209,7 @@ async function generateCover(myPrompt) {
 
 function writeCover(myCover) {
   const db = getDatabase();
-  set(ref(db, "covers/"), {
+  set(ref(db, "playlistCovers"), {
     cover: myCover,
   });
   console.log("wrote cover to database");
