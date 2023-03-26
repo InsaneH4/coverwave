@@ -16,7 +16,7 @@ const scopes = [
 let spotifyApi = new SpotifyWebApi({
     clientId: 'ee221dffbe9c403e94f8fac15b651f41',
     clientSecret: 'ace4279e5ad84eee95127a39b7b7c8d5',
-    redirectUri: 'http://localhost:8000/callback',
+    redirectUri: 'https://coverwave.herokuapp.com/callback',
 });
 
 const app = express();
@@ -215,5 +215,5 @@ app.get('/callback', (req, res) => {
 });
 
 app.listen(8000, () =>
-    console.log('HTTP Server up. [http://localhost:8000/login]')
+    console.log('HTTP Server up. [https://coverwave.herokuapp.com/login]')
 );
