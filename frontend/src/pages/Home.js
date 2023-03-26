@@ -43,6 +43,13 @@ export default function Home() {
         }
     }
 
+    const loginSpotify = () => {
+        fetch('http://localhost:8000/login', { // change to heroku later i think
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+    }
+
 
 
     return (
@@ -53,7 +60,7 @@ export default function Home() {
                         <span className="tagline">Welcome to coverwave</span>
                         <h1>{'Hi, This is '}<span className="wrap">{text}</span></h1>
                         <p>Coverwave takes a look at your Spotify playlists and generates covers from them with AI</p>
-                        <Link className="button" to="/login" >Log in with Spotify<ArrowRightCircle size={25} /></Link>
+                        <Link className="button" onClick={loginSpotify} >Log in with Spotssssify<ArrowRightCircle size={25} /></Link>
                     </Col>
 
                     {/* <Col xs={12} md={6} xl={5}>
