@@ -60,7 +60,7 @@ async function getPlaylistTracks(playlistId) {
 
 function analyzePlaylist(playlist) {
     let analysis = [0, 0, 0, 0, 0, 0];
-    let prompt = "vibrant ";
+    let prompt = "vibrant album cover ";
     for (let track of playlist) {
 
         //old version
@@ -135,11 +135,11 @@ function analyzePlaylist(playlist) {
     } else if (analysis[4] < 60) {
         prompt += " slow ";
     }
-    if (analysis[5] >= 0.5) { // valence
+    if (analysis[5] >= 0.4) { // valence
         prompt += " joyful ";
-    } else if (analysis[5] >= 0.2 && analysis[5] < 0.5) {
+    } else if (analysis[5] >= 0.1 && analysis[5] < 0.4) {
         prompt += " neutral ";
-    } else if (analysis[5] < 0.2) {
+    } else if (analysis[5] < 0.1) {
         prompt += " sad ";
     }
     return prompt;
@@ -156,8 +156,7 @@ async function generateCover(prompt) {
                 prompt: prompt,
             },
         );
-    console.log(prediction.output);
-
+    return prediction.output;
 }
 
 app.get('/callback', (req, res) => {
@@ -201,12 +200,13 @@ app.get('/callback', (req, res) => {
             //INSANEEEEEE
             myPlaylists.then(console.log);
             let selectedPlist = myPlaylists.then((playlists) => {
-                return getPlaylistTracks(playlists[16].id);
+                return getPlaylistTracks(playlists[11].id);
             });
             selectedPlist.then(console.log);
             let prompt = selectedPlist.then(analyzePlaylist);
             // prompt.then(console.log);
-            prompt.then(generateCover);
+            let image = prompt.then(generateCover);
+            image.then(console.log);
         })
         .catch(error => {
             console.error('Error getting Tokens:', error);

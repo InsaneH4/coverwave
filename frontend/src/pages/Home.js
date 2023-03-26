@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap"
 import { ArrowRightCircle } from "react-bootstrap-icons"
-import {Link, useMatch, useResolvedPath} from "react-router-dom"
+import { Link, useMatch, useResolvedPath } from "react-router-dom"
 import { children } from "react"
 import headerImg from "../assets/2.svg";
 
@@ -19,7 +19,7 @@ export default function Home() {
             tick();
         }, delta)
 
-        return () => { clearInterval(ticker)};
+        return () => { clearInterval(ticker) };
     }, [text])
 
     const tick = () => {
@@ -29,14 +29,14 @@ export default function Home() {
 
         setText(updatedText);
 
-        if(isDeleting) {
-            setDelta(prevDelta => prevDelta /2)
+        if (isDeleting) {
+            setDelta(prevDelta => prevDelta / 2)
         }
 
-        if(!isDeleting && updatedText === fullText) {
+        if (!isDeleting && updatedText === fullText) {
             setIsDeleting(true);
             setDelta(period);
-        } else if(isDeleting && updatedText === '') {
+        } else if (isDeleting && updatedText === '') {
             setIsDeleting(false);
             setLoopNum(loopNum + 1);
             setDelta(500);
@@ -52,10 +52,10 @@ export default function Home() {
                     <Col xs={12} md={6} xl={7}>
                         <span className="tagline">Welcome to coverwave</span>
                         <h1>{'Hi, This is '}<span className="wrap">{text}</span></h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <Link className ="button" to="/login" >Let's connect<ArrowRightCircle size={25} /></Link>
+                        <p>Coverwave takes a look at your Spotify playlists and generates covers from them with AI</p>
+                        <Link className="button" to="/login" >Log in with Spotify<ArrowRightCircle size={25} /></Link>
                     </Col>
-                    
+
                     {/* <Col xs={12} md={6} xl={5}>
                         <img src={headerImg} alt="img"></img>
                     </Col> */}
