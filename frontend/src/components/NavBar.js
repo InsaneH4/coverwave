@@ -1,47 +1,24 @@
-import {useState, useEffect} from "react";
-import { Navbar, Container, Nav } from "react-bootstrap";
+import {Link, useMatch, useResolvedPath} from "react-router-dom"
+import { children } from "react"
+
+export default function NavBar() {
+    return <nav className="nav">
+        <Link to="/" className="site-title">coverwave</Link>
+        {/* <ul>
+            <CustomLink to="/login">Log In</CustomLink>
+        </ul> */}
+    </nav>
+}
 
 
-
-export const NavBar = () => {
-    const [activeLink, setActiveLink] = useState('home');
-    const [scrolled, seScrolled] = useState(false);
-
-    useEffect(() => {
-        const onScroll = () => {
-            if(window.scrollY > 50) {
-                seScrolled(true);
-            } else {
-                seScrolled(false);
-            }
-        }
-
-        window.addEventListener("scroll", onScroll);
-
-        return () => window.removeEvenListnener("scroll", onScroll);
-    }, [])
-
-    const onUpdateActiveLink = (value) => {
-      setActiveLink(value);
-    }
-    
+function CustomLink({to, children, ...props}) {
+    const resolvedPath = useResolvedPath(to)
+    const isActive = useMatch({ path: resolvedPath.pathname, end:true})
     return (
-        <Navbar bg="light" expand="lg" className={scrolled ? "scrolled": ""}>
-      <Container>
-        <Navbar.Brand href="#home">coverwave</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav">
-            <span className = "navbar-toggler-icon"></span>
-        </Navbar.Toggle>
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home" className={activeLink ==='Home' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('home')}>Home</Nav.Link>
-            <Nav.Link href="#link" className={activeLink ==='link' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('link')}>Link</Nav.Link>
-          </Nav>
-          <span className="navbar-text"> 
-            <button className="login" onClick={() => console.log('connect')}><span>Log In</span></button>
-          </span>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        <li className={isActive ? "active" : ""}>
+            <Link to={to} {...props}>
+                {children}
+            </Link>
+        </li>
     )
 }
