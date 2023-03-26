@@ -3,9 +3,7 @@ import { children } from "react"
 
 export default function NavBar() {
     return <nav className="nav">
-
-        <Link to="/" className="site-title">coverwave</Link>
-
+        <Link to="/home" className="site-title">coverwave</Link>
         <ul>
             <CustomLink to="/select">Playlists</CustomLink>
         </ul>

@@ -5,14 +5,15 @@ import { Link, useMatch, useResolvedPath } from "react-router-dom"
 import { children } from "react"
 import headerImg from "../assets/2.svg";
 
-const loginSpotify = () => {
-    fetch('http://localhost:8000/login', { // change to heroku later i think
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    })
-}
+const LOGIN_LINK = "http://localhost:8000/login";
+// const loginSpotify = () => {
+//     fetch('http://localhost:8000/login', { 
+//         method: 'GET',
+//         headers: {'Content-Type': 'application/json'}
+//     })
+// }
 
-export default function Home() {
+export default function Home(event) {
     const [loopNum, setLoopNum] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
     const toRotate = ["coverwave"];
@@ -50,6 +51,7 @@ export default function Home() {
     }
 
     return (
+        
         <section className="banner">
             <Container>
                 <Row className="align-item-center">
@@ -57,7 +59,8 @@ export default function Home() {
                         <span className="tagline">Welcome to coverwave</span>
                         <h1>{'Hi, This is '}<span className="wrap">{text}</span></h1>
                         <p>Coverwave takes a look at your Spotify playlists and generates covers from them with AI</p>
-                        <Link className="button" onClick={loginSpotify} >Log in with Spotify<ArrowRightCircle size={25} /></Link>
+                        <Link className="button" to="/login" >Log in with Spotify<ArrowRightCircle size={25} /></Link>
+
                     </Col>
 
                     {/* <Col xs={12} md={6} xl={5}>
