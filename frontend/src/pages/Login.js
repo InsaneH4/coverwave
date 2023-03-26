@@ -1,3 +1,8 @@
 export default function Login() {
-    return <h1>Log In</h1>
+    return (
+        <form class="search-form">
+            <input type="text" placeholder="Playlists..." />
+            <input type="button" onclick="window.location.href='';" value="Search" />
+        </form>
+    )
 }
