@@ -6,6 +6,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import express from "express";
 
 let access_token = "0";
+let prompt = "vibrant album cover ";
 
 const scopes = [
   "ugc-image-upload",
@@ -59,7 +60,6 @@ async function getPlaylistTracks(playlistId) {
 
 function analyzePlaylist(playlist) {
   let analysis = [0, 0, 0, 0, 0, 0];
-  let prompt = "vibrant album cover ";
   for (let track of playlist) {
     //old version
     //=====================================================================
@@ -174,7 +174,7 @@ app.get("/callback", (req, res) => {
   spotifyApi
     .authorizationCodeGrant(code)
     .then((data) => {
-      console.log("HEEYY:", data.body);
+      //console.log("HEEYY:", data.body);
       access_token = data.body["access_token"];
       const refresh_token = data.body["refresh_token"];
       const expires_in = data.body["expires_in"];
@@ -185,9 +185,9 @@ app.get("/callback", (req, res) => {
       console.log("access_token:", access_token);
       console.log("refresh_token:", refresh_token);
 
-      console.log(
-        `Sucessfully retreived access token. Expires in ${expires_in} s.`
-      );
+      // console.log(
+      //   `Sucessfully retreived access token. Expires in ${expires_in} s.`
+      // );
       res.send("Success! You can now close the window.");
 
       setInterval(async () => {
@@ -200,15 +200,15 @@ app.get("/callback", (req, res) => {
       }, (expires_in / 2) * 1000);
       let myPlaylists = getMyPlaylists();
       //INSANEEEEEE
-      myPlaylists.then(console.log);
+      //myPlaylists.then(console.log);
       let selectedPlist = myPlaylists.then((playlists) => {
         return getPlaylistTracks(playlists[11].id);
       });
-      selectedPlist.then(console.log);
-      let prompt = selectedPlist.then(analyzePlaylist);
-      // prompt.then(console.log);
-      let image = prompt.then(generateCover);
-      image.then(console.log);
+      //selectedPlist.then(console.log);
+      prompt = selectedPlist.then(analyzePlaylist);
+      //prompt.then(console.log);
+      //let image = prompt.then(generateCover);
+      //image.then(console.log);
     })
     .catch((error) => {
       console.error("Error getting Tokens:", error);
@@ -218,6 +218,17 @@ app.get("/callback", (req, res) => {
 
 app.get("/playlists", (req, res) => {
   return getMyPlaylists();
+});
+
+app.get("/prompt", (req, res) => {
+  prompt.then((prompt) => {
+    res.send(prompt);
+  });
+  return res;
+});
+
+app.get("/test", (req, res) => {
+  res.send("test");
 });
 
 app.listen(8000, () =>

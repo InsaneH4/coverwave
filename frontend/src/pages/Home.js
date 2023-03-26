@@ -5,7 +5,7 @@ import { Link, useMatch, useResolvedPath } from "react-router-dom"
 import { children } from "react"
 import headerImg from "../assets/2.svg";
 
-const LOGIN_LINK = "http://localhost:8000/login";
+//const LOGIN_LINK = "http://localhost:8000/login";
 // const loginSpotify = () => {
 //     fetch('http://localhost:8000/login', { 
 //         method: 'GET',
