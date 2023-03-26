@@ -3,9 +3,14 @@ import { Col, Container, Row } from "react-bootstrap"
 import { ArrowRightCircle } from "react-bootstrap-icons"
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
 import { children } from "react"
-import SpotifyWebApi from "spotify-web-api-node";
 import headerImg from "../assets/2.svg";
 
+const loginSpotify = () => {
+    fetch('http://localhost:8000/login', { // change to heroku later i think
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    })
+}
 
 export default function Home() {
     const [loopNum, setLoopNum] = useState(0);
@@ -52,7 +57,7 @@ export default function Home() {
                         <span className="tagline">Welcome to coverwave</span>
                         <h1>{'Hi, This is '}<span className="wrap">{text}</span></h1>
                         <p>Coverwave takes a look at your Spotify playlists and generates covers from them with AI</p>
-                        <Link className="button" /*onClick={spotifyLogin}*/ >Log in to Spotify<ArrowRightCircle size={25} /></Link>
+                        <Link className="button" onClick={loginSpotify} >Log in to Spotify<ArrowRightCircle size={25} /></Link>
 
                     </Col>
 
@@ -69,9 +74,3 @@ export default function Home() {
         </section>
     )
 }
-
-// function spotifyLogin() {
-//     app.get('/login', (req, res) => {
-//         res.redirect(spotifyApi.createAuthorizeURL(scopes));
-//     });
-// }

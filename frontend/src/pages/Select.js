@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 
 export default function Select() {
-    // const [list ,setList] = useState([]);
-    // useEffect(() => {})
+    const [list ,setList] = useState([]);
+    useEffect(() => {
+        const getPlaylists = () => {
+            
+        }
+    })
 
     return (
         <form class="search-form">
