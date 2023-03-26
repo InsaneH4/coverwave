@@ -5,6 +5,39 @@ import replicate from "node-replicate";
 import SpotifyWebApi from "spotify-web-api-node";
 import express from "express";
 
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set } from "firebase/database";
+
+// TODO: Add SDKs for Firebase products that you want to use
+
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAnpMfGMByUyomWdtFPhKxfvw3imHe5bGo",
+
+  authDomain: "coverwave-b3885.firebaseapp.com",
+
+  databaseURL: "https://coverwave-b3885-default-rtdb.firebaseio.com",
+
+  projectId: "coverwave-b3885",
+
+  storageBucket: "coverwave-b3885.appspot.com",
+
+  messagingSenderId: "585473472871",
+
+  appId: "1:585473472871:web:050062774fe2ccc0ef97c2",
+
+  measurementId: "G-65VSQS13KP",
+};
+
+// Initialize Firebase
+
+const fbApp = initializeApp(firebaseConfig);
+
 let access_token = "0";
 let prompt = "vibrant album cover ";
 
@@ -161,6 +194,13 @@ async function generateCover(prompt) {
   return prediction.output;
 }
 
+function writeCover(cover) {
+  const db = getDatabase();
+  set(ref(db), {
+    covers: cover,
+  });
+}
+
 app.get("/callback", (req, res) => {
   const error = req.query.error;
   const code = req.query.code;
@@ -202,13 +242,15 @@ app.get("/callback", (req, res) => {
       //INSANEEEEEE
       //myPlaylists.then(console.log);
       let selectedPlist = myPlaylists.then((playlists) => {
-        return getPlaylistTracks(playlists[11].id);
+        // console.log(playlists);
+        return getPlaylistTracks(playlists[0].id);
       });
       //selectedPlist.then(console.log);
-      prompt = selectedPlist.then(analyzePlaylist);
+      let prompt = selectedPlist.then(analyzePlaylist);
       //prompt.then(console.log);
-      //let image = prompt.then(generateCover);
-      //image.then(console.log);
+      let image = prompt.then(generateCover);
+      // image.then(storeCover);
+      image.then(console.log);
     })
     .catch((error) => {
       console.error("Error getting Tokens:", error);

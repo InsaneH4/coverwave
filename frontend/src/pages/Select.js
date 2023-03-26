@@ -24,23 +24,6 @@ export default function Select() {
     getPlaylists();
   }, []);
 
-  const getPrompt = async () => {
-    const response = await fetch(`http://localhost:8000/prompt`);
-    console.log(response);
-    return response;
-  };
-
-  const getTest = async () => {
-    const response = await fetch(`http://localhost:8000/test`);
-    console.log(response);
-    return response;
-    };
-
-  const imgPrompt = getPrompt();
-  //console.log(prompt);
-
-  const test = getTest().then((res) => res.json());
-
   return (
     <form class="search-form">
       <div class="dropdown">
@@ -53,7 +36,7 @@ export default function Select() {
             <option value={playlist.name}>{playlist.name}</option>
           ))}
         </select>
-        <h1>{test.toString}</h1>
+        <h1>{}</h1>
       </div>
       <input type="button" onclick="window.location.href='';" value="Submit" />
     </form>
