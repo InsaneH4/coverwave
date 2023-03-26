@@ -60,7 +60,7 @@ async function getPlaylistTracks(playlistId) {
 
 function analyzePlaylist(playlist) {
     let analysis = [0, 0, 0, 0, 0, 0];
-    let prompt = "";
+    let prompt = "vibrant ";
     for (let track of playlist) {
 
         //old version
@@ -201,7 +201,7 @@ app.get('/callback', (req, res) => {
             //INSANEEEEEE
             myPlaylists.then(console.log);
             let selectedPlist = myPlaylists.then((playlists) => {
-                return getPlaylistTracks(playlists[2].id);
+                return getPlaylistTracks(playlists[16].id);
             });
             selectedPlist.then(console.log);
             let prompt = selectedPlist.then(analyzePlaylist);
