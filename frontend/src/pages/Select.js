@@ -27,6 +27,16 @@ const coverRef = ref(db, "cover/");
 const playlistRef = ref(db, "playlist/");
 let imageUrl = "";
 let pName = "title not found";
+get(child(coverRef, "cover/")).then((snapshot) => {
+  if (snapshot.exists()) {
+    imageUrl = snapshot.val();
+  }
+});
+get(child(playlistRef, "playlist/")).then((snapshot) => {
+  if (snapshot.exists()) {
+    pName = snapshot.val();
+  }
+});
 onValue(coverRef, (snapshot) => {
   imageUrl = snapshot.val();
 });
