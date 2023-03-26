@@ -23,16 +23,25 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 const db = getDatabase();
-const coversRef = ref(db);
+const coversRef = ref(db, "covers/");
+const titlesRef = ref(db, "playlists/");
 let imageUrl = "";
 let pName = "title not found";
-get(child(coversRef, "covers")).then((snapshot) => {
+get(child(coversRef)).then((snapshot) => {
   if (snapshot.exists()) {
     imageUrl = snapshot.val();
   }
 });
+get(child(titlesRef)).then((snapshot) => {
+  if (snapshot.exists()) {
+    pName = snapshot.val();
+  }
+});
 onValue(coversRef, (snapshot) => {
   imageUrl = snapshot.val();
+});
+onValue(titlesRef, (snapshot) => {
+  pName = snapshot.val();
 });
 
 export default function Select() {
@@ -61,7 +70,7 @@ export default function Select() {
 
   return (
     <div>
-      <h2>Cover art generated for your playlist</h2>      
+      <h2>Cover art generated for your playlist</h2>
       <img src={imageUrl} alt="playlist cover" width="250" height="250" />
       <h1>{pName}</h1>
     </div>

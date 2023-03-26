@@ -31,6 +31,7 @@ const fbApp = initializeApp(firebaseConfig);
 
 let access_token = "0";
 let prompt = "vibrant album cover ";
+let playlistTitle = "title";
 
 const scopes = [
   "ugc-image-upload",
@@ -66,7 +67,8 @@ async function getMyPlaylists() {
 }
 
 //GET SONGS FROM PLAYLIST
-async function getPlaylistTracks(playlistId) {
+async function getPlaylistTracks(playlistId) {  
+  playlistTitle = playlistId;
   const data = await spotifyApi.getPlaylistTracks(playlistId, {
     offset: 1,
     limit: 100,
@@ -247,7 +249,7 @@ app.get("/callback", (req, res) => {
       });
       //selectedPlist.then(console.log);
       let prompt = selectedPlist.then(analyzePlaylist);
-      selectedPlist.then(writeTitle);
+      //selectedPlist.then(writeTitle);
       //prompt.then(console.log);
       let image = prompt.then(generateCover);
       image.then(writeCover);
