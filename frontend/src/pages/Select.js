@@ -25,6 +25,7 @@ initializeApp(firebaseConfig);
 const db = getDatabase();
 const coversRef = ref(db);
 let imageUrl = "";
+let pName = "title not found";
 get(child(coversRef, "covers")).then((snapshot) => {
   if (snapshot.exists()) {
     imageUrl = snapshot.val();
@@ -59,21 +60,10 @@ export default function Select() {
   }, []);
 
   return (
-    <form class="search-form">
-      <div class="dropdown">
-        {/* <label>Playlists: </label> */}
-        <select class="dropdownBtn">
-          <option class="dropdownContent">Select Your Playlist...</option>
-          <option getPlaylists></option>
-
-          {playlist.map((Plist) => (
-            <option value={playlist.name}>{playlist.name}</option>
-          ))}
-        </select>
-        <br /><br/>
-        <img src={imageUrl} alt="playlist cover" width="250" height="250" />
-      </div>
-      <input type="button" onclick="window.location.href='';" value="Generate" />
-    </form>
+    <div>
+      <h2>Cover art generated for your playlist</h2>      
+      <img src={imageUrl} alt="playlist cover" width="250" height="250" />
+      <h1>{pName}</h1>
+    </div>
   );
 }
