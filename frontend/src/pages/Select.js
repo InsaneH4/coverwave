@@ -3,9 +3,20 @@ import { useState, useEffect } from "react";
 export default function Select() {
     const [list ,setList] = useState([]);
     useEffect(() => {
-        const getPlaylists = () => {
-            
+        async getPlaylists = () => {
+            fetch('http://localhost:8000/playlists',
+            {
+                method: 'GET',
+                headers: 'Content-Type': 'application/json'
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (!res.error) {
+                    console.log("hooray!!");
+                }
+            } )
         }
+        getPlaylists();
     })
 
     return (
