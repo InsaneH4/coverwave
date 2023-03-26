@@ -27,12 +27,12 @@ const coverRef = ref(db, "cover/");
 const playlistRef = ref(db, "playlist/");
 let imageUrl = "";
 let pName = "title not found";
-get(child(coverRef, "cover/")).then((snapshot) => {
+get(child(coverRef)).then((snapshot) => {
   if (snapshot.exists()) {
     imageUrl = snapshot.val();
   }
 });
-get(child(playlistRef, "playlist/")).then((snapshot) => {
+get(child(playlistRef)).then((snapshot) => {
   if (snapshot.exists()) {
     pName = snapshot.val();
   }
@@ -46,28 +46,6 @@ onValue(playlistRef, (snapshot) => {
 
 export default function Select() {
   // const [list ,setList] = useState([]);
-  const [playlist, setPlayList] = useState([{ name: "" }]);
-  useEffect(() => {
-    const getPlaylists = async () => {
-      const response = await fetch(`http://localhost:8000/playlists`);
-      const newData = await response.json();
-      setPlayList(newData);
-      console.log(newData);
-      // fetch('http://localhost:8000/playlists',
-      // {
-      //     method: 'GET',
-      //     headers: 'Content-Type': 'application/json'
-      // })
-      // .then(res => res.json())
-      // .then(res => {
-      //     if (!res.error) {
-      //         console.log("hooray!!");
-      //     }
-      // } )
-    };
-    //getPlaylists();
-  }, []);
-
   return (
     <div>
       <h2>Cover art generated for your playlist</h2>
