@@ -187,7 +187,7 @@ async function generateCover(myPrompt) {
 
 function writeCover(myCover) {
   const db = getDatabase();
-  set(ref(db), "playlist", {
+  set(ref(db), "covers", {
     cover: myCover,
   });
   console.log("wrote cover to database");
@@ -195,7 +195,7 @@ function writeCover(myCover) {
 
 function writeTitle(playlist) {
   const db = getDatabase();
-  set(ref(db), "playlist", {
+  set(ref(db), "playlists", {
     title: playlist.name,
   });
   console.log("wrote title to database");
