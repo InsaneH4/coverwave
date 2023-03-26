@@ -14,9 +14,15 @@ const scopes = [
 ];
 
 let spotifyApi = new SpotifyWebApi({
+<<<<<<< HEAD
   clientId: "ee221dffbe9c403e94f8fac15b651f41",
   clientSecret: "ace4279e5ad84eee95127a39b7b7c8d5",
   redirectUri: "http://localhost:8000/callback",
+=======
+    clientId: 'ee221dffbe9c403e94f8fac15b651f41',
+    clientSecret: 'ace4279e5ad84eee95127a39b7b7c8d5',
+    redirectUri: 'http://localhost:3000/select',
+>>>>>>> 5e012a180df1a6b6ebefd6771e40ed29e3bd0d70
 });
 
 const app = express();
@@ -215,6 +221,10 @@ app.get("/callback", (req, res) => {
       res.send(`Error getting Tokens: ${error}`);
     });
 });
+
+app.get('/playlists', (req, res) => {
+    return getMyPlaylists();
+})
 
 app.listen(8000, () =>
   console.log("HTTP Server up. [http://localhost:8000/login]")

@@ -1,6 +1,6 @@
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home"
-import Login from "./pages/Login"
+import Select from "./pages/Select"
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="/select" element={<Select />}></Route>
         </Routes>
       </div>
     </>
