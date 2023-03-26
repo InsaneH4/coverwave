@@ -173,14 +173,14 @@ function analyzePlaylist(playlist) {
   return prompt;
 }
 
-async function generateCover(prompt) {
-  console.log("prompt: ", prompt);
+async function generateCover(myPrompt) {
+  console.log("prompt: ", myPrompt);
   const prediction = await replicate
     .model(
       "stability-ai/stable-diffusion:db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf"
     )
     .predict({
-      prompt: prompt,
+      prompt: myPrompt,
     });
   return prediction.output;
 }
