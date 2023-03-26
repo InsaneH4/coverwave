@@ -87,10 +87,19 @@ async function getPlaylistTracks(playlistId) {
 function getPlaylistName(playlistId) {
   spotifyApi.getPlaylist(playlistId)
   .then(function(data) {
-    console.log('Some information about this playlist', data.body);
+    // console.log('Some information about this playlist', data.body);
+    writeTitle2(data.body.name);
   }, function(err) {
     console.log('Something went wrong!', err);
   });
+}
+
+function writeTitle2(name) {
+  const db = getDatabase();
+  set(ref(db, "playlists/"), {
+    title: name,
+  });
+  console.log("wrote title to database");
 }
 
 function analyzePlaylist(playlist) {
